@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I'm Sorry 🥺</title>
+<meta name="description" content="A little card that says sorry, from the heart.">
+<meta property="og:title" content="I'm Sorry 🥺">
+<meta property="og:description" content="Someone has something to tell you… open the envelope 💌">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥺</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#ffe4ec; --bg2:#fff1e6; --bg3:#e9e4ff;
+  --ink:#4a2c3a; --soft:#8a6476; --pink:#ff6f9c; --pink-d:#e84a7f;
+  --peach:#ffb59e; --lav:#b9a7ff; --card:#ffffffcc; --line:#ffd0de;
+  --bear:#c99872; --bear-d:#a87a56; --bear-l:#ecc9a8;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"Nunito",system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(135deg,var(--bg1),var(--bg2) 45%,var(--bg3));
+  background-attachment:fixed;overflow-x:hidden;min-height:100svh;
+}
+/* soft blobs */
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0;pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
+.b1{width:340px;height:340px;background:#ffb3cb;top:-80px;left:-80px}
+.b2{width:300px;height:300px;background:#cbbcff;bottom:-60px;right:-60px;animation-delay:-6s}
+.b3{width:220px;height:220px;background:#ffd3b8;top:40%;left:60%;animation-delay:-12s}
+@keyframes drift{to{transform:translate(40px,30px) scale(1.15)}}
+
+#hearts{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.fh{position:absolute;bottom:-40px;animation:rise linear forwards;opacity:.8}
+@keyframes rise{to{transform:translateY(-115vh) rotate(var(--r));opacity:0}}
+
+main{position:relative;z-index:2;min-height:100svh;display:grid;place-items:center;padding:24px 16px}
+.screen{width:100%;max-width:440px;display:none;flex-direction:column;align-items:center;text-align:center}
+.screen.active{display:flex;animation:pop .7s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+
+h1,h2,.btn{font-family:"Fredoka",sans-serif}
+.kicker{font-family:"Fredoka";font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.78rem;color:var(--pink-d);margin-bottom:10px}
+.hint{color:var(--soft);font-size:.95rem;margin-top:18px}
+
+/* ---------- Envelope ---------- */
+.env-wrap{perspective:900px;cursor:pointer;margin:18px 0 6px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.envelope{position:relative;width:290px;height:190px;background:#ffc2d4;border-radius:14px;box-shadow:0 24px 50px -18px #e84a7f80}
+.envelope .back-pocket{position:absolute;inset:0;border-radius:14px;overflow:hidden;z-index:3}
+.envelope .back-pocket::before,.envelope .back-pocket::after{content:"";position:absolute;bottom:0;width:0;height:0;border-style:solid}
+.envelope .back-pocket::before{left:0;border-width:95px 0 95px 145px;border-color:transparent transparent transparent #ffb0c7}
+.envelope .back-pocket::after{right:0;border-width:95px 145px 95px 0;border-color:transparent #ffb0c7 transparent transparent}
+.pocket-front{position:absolute;bottom:0;left:0;right:0;height:0;border-left:145px solid transparent;border-right:145px solid transparent;border-bottom:110px solid #ff9fba;border-radius:0 0 14px 14px;z-index:3}
+.flap{position:absolute;top:0;left:0;width:0;height:0;border-left:145px solid transparent;border-right:145px solid transparent;border-top:110px solid #ff8db0;transform-origin:top;transition:transform .6s ease,z-index 0s .3s;z-index:4;filter:drop-shadow(0 4px 4px #0000000f)}
+.seal{position:absolute;left:50%;top:92px;transform:translate(-50%,-50%);z-index:5;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8aa9,#d6336c);display:grid;place-items:center;box-shadow:0 4px 10px #b0204f66,inset 0 -3px 6px #0003;transition:transform .4s, opacity .4s;font-size:24px}
+.letter-peek{position:absolute;left:18px;right:18px;top:16px;bottom:10px;background:#fffaf6;border-radius:10px;z-index:2;transition:transform .7s .35s cubic-bezier(.3,1.3,.5,1);display:grid;place-items:center;font-family:"Caveat";font-size:1.9rem;color:transparent;align-items:start;padding-top:10px}
+.envelope.open .letter-peek{color:var(--pink-d)}
+.envelope.open .flap{transform:rotateX(180deg);z-index:1}
+.envelope.open .seal{transform:translate(-50%,-50%) scale(0);opacity:0}
+.envelope.open .letter-peek{transform:translateY(-90px)}
+.to-line{font-family:"Caveat";font-size:2.1rem;color:var(--ink);margin-top:22px}
+.to-line b{color:var(--pink-d)}
+
+/* ---------- Card ---------- */
+.card{width:100%;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1.5px solid #ffffff;border-radius:28px;padding:26px 22px 24px;box-shadow:0 30px 60px -30px #c2185b55, 0 2px 0 #fff inset}
+.bear{width:190px;height:auto;margin:-80px auto 4px;display:block;filter:drop-shadow(0 12px 14px #a87a5640)}
+.bear .tear{animation:tear 1.8s ease-in infinite}
+.bear .tear.t2{animation-delay:.9s}
+@keyframes tear{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(26px);opacity:0}}
+.bear .arm{transform-origin:center;animation:hug 2.4s ease-in-out infinite}
+@keyframes hug{50%{transform:translateY(-3px)}}
+.bear .heartbeat{transform-box:fill-box;transform-origin:center;animation:beat 1.2s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.14)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+.happy-only{display:none}
+.bear.happy .sad-only{display:none}
+.bear.happy .happy-only{display:inline}
+
+h1.sorry{font-size:clamp(2.6rem,11vw,3.4rem);font-weight:700;line-height:1;background:linear-gradient(90deg,var(--pink-d),#ff8f6b,#a17cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 4px}
+.sub{color:var(--soft);font-weight:600}
+.letter{font-family:"Caveat";font-size:1.55rem;line-height:1.35;text-align:left;margin:18px 0 6px;min-height:9.5em;padding:14px 16px;border-radius:16px;
+  background:repeating-linear-gradient(#fffdfb 0 33px,#ffe1ea 33px 34px);border:1px solid var(--line);white-space:pre-wrap}
+.caret{display:inline-block;width:2px;height:1em;background:var(--pink-d);vertical-align:-3px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.sign{font-family:"Caveat";font-size:1.6rem;text-align:right;color:var(--pink-d);opacity:0;transition:opacity .8s}
+.sign.show{opacity:1}
+
+.btn{appearance:none;border:0;cursor:pointer;font-weight:600;font-size:1.08rem;padding:14px 26px;border-radius:999px;color:#fff;
+  background:linear-gradient(135deg,#ff7aa5,#ff5c8d);box-shadow:0 10px 22px -8px #e84a7f,0 -3px 0 #0000001a inset;transition:transform .18s, box-shadow .18s, opacity .3s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.ghost{background:#fff;color:var(--pink-d);box-shadow:0 8px 18px -10px #e84a7f80, 0 0 0 2px #ffd0de inset}
+.btn[disabled]{opacity:0;pointer-events:none}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+/* ---------- Promises (flip) ---------- */
+.promises{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:16px}
+.flip{perspective:700px;aspect-ratio:3/4;cursor:pointer}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,1.4,.5,1);transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;gap:6px}
+.front{background:linear-gradient(160deg,#ffd6e3,#ffc0d3);box-shadow:0 10px 20px -12px #e84a7f}
+.front .emo{font-size:2.1rem}
+.front small{font-family:"Fredoka";font-weight:500;color:#b23a66;font-size:.82rem}
+.back{background:#fff;transform:rotateY(180deg);border:1.5px solid var(--line);font-family:"Caveat";font-size:1.25rem;line-height:1.1;color:var(--ink)}
+.flip:nth-child(2) .front{background:linear-gradient(160deg,#e6defe,#d2c5ff)}
+.flip:nth-child(2) .front small{color:#6a4fd1}
+.flip:nth-child(3) .front{background:linear-gradient(160deg,#ffe3d4,#ffc9b0)}
+.flip:nth-child(3) .front small{color:#c25a33}
+
+/* ---------- Forgive ---------- */
+.ask{font-size:clamp(1.8rem,8vw,2.3rem);font-weight:700;margin:4px 0 2px}
+.choice-zone{position:relative;width:100%;min-height:150px;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
+#yes{transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+#no{transition:left .25s ease, top .25s ease, transform .25s}
+#no.loose{position:fixed;z-index:50}
+.plead{font-family:"Caveat";font-size:1.5rem;color:var(--pink-d);min-height:1.6em;margin-top:6px}
+
+/* ---------- Yay ---------- */
+.yay{font-size:clamp(2.4rem,11vw,3.2rem);font-weight:700;color:var(--pink-d);line-height:1.05}
+.coupon{margin-top:18px;border:2px dashed #ff9fba;border-radius:18px;padding:14px 16px;background:#fff8fa;width:100%;text-align:left;display:flex;gap:12px;align-items:center}
+.coupon .ic{font-size:2rem}
+.coupon b{font-family:"Fredoka";font-weight:600;display:block}
+.coupon span{color:var(--soft);font-size:.92rem}
+
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,120px);background:#4a2c3a;color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;font-size:.92rem;transition:transform .4s cubic-bezier(.3,1.4,.5,1);z-index:70}
+.toast.show{transform:translate(-50%,0)}
+.music{position:fixed;top:14px;right:14px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;background:#ffffffcc;backdrop-filter:blur(8px);box-shadow:0 6px 16px -8px #e84a7f;font-size:1.2rem;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div id="hearts"></div>
+<canvas id="confetti"></canvas>
+<button class="music" id="music" aria-label="Toggle music" title="Play a soft tune">🎵</button>
+
+<!-- reusable bear -->
+<template id="bearTpl">
+<svg class="bear" viewBox="0 0 220 230" aria-hidden="true">
+  <!-- ears -->
+  <circle cx="52" cy="50" r="26" fill="var(--bear)"/><circle cx="52" cy="50" r="14" fill="var(--bear-l)"/>
+  <circle cx="168" cy="50" r="26" fill="var(--bear)"/><circle cx="168" cy="50" r="14" fill="var(--bear-l)"/>
+  <!-- body -->
+  <ellipse cx="110" cy="190" rx="64" ry="42" fill="var(--bear)"/>
+  <ellipse cx="110" cy="196" rx="40" ry="26" fill="var(--bear-l)"/>
+  <!-- head -->
+  <ellipse cx="110" cy="100" rx="72" ry="64" fill="var(--bear)"/>
+  <ellipse cx="110" cy="122" rx="32" ry="24" fill="var(--bear-l)"/>
+  <!-- blush -->
+  <ellipse cx="62" cy="118" rx="13" ry="8" fill="#ff8fab" opacity=".55"/>
+  <ellipse cx="158" cy="118" rx="13" ry="8" fill="#ff8fab" opacity=".55"/>
+  <!-- sad eyes -->
+  <g class="sad-only">
+    <path d="M70 84 q10 -8 22 -2" stroke="#4a2c3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M128 82 q12 -6 22 2" stroke="#4a2c3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="82" cy="100" rx="9" ry="11" fill="#3a2230"/><circle cx="85" cy="96" r="3.4" fill="#fff"/><circle cx="79" cy="104" r="1.6" fill="#fff"/>
+    <ellipse cx="138" cy="100" rx="9" ry="11" fill="#3a2230"/><circle cx="141" cy="96" r="3.4" fill="#fff"/><circle cx="135" cy="104" r="1.6" fill="#fff"/>
+    <path class="tear" d="M76 112 q-4 7 0 10 q4 -3 0 -10z" fill="#8fd3ff"/>
+    <path class="tear t2" d="M144 112 q-4 7 0 10 q4 -3 0 -10z" fill="#8fd3ff"/>
+    <path d="M100 136 q10 -8 20 0" stroke="#4a2c3a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- happy eyes -->
+  <g class="happy-only">
+    <path d="M72 100 q10 -14 20 0" stroke="#3a2230" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M128 100 q10 -14 20 0" stroke="#3a2230" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M98 130 q12 14 24 0 z" fill="#e84a7f" stroke="#4a2c3a" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+  <!-- nose -->
+  <ellipse cx="110" cy="118" rx="9" ry="6.5" fill="#3a2230"/>
+  <!-- heart + arms -->
+  <g class="arm">
+    <path class="heartbeat" d="M110 214 C 70 186, 74 156, 96 156 C 104 156, 110 164, 110 170 C 110 164, 116 156, 124 156 C 146 156, 150 186, 110 214 Z" fill="#ff5c8d" stroke="#e8336f" stroke-width="2"/>
+    <ellipse cx="74" cy="182" rx="16" ry="13" fill="var(--bear-d)"/>
+    <ellipse cx="146" cy="182" rx="16" ry="13" fill="var(--bear-d)"/>
+  </g>
+</svg>
+</template>
+
+<main>
+  <!-- 1. Envelope -->
+  <section class="screen active" id="s-env">
+    <p class="kicker">a little something for you</p>
+    <div class="env-wrap" id="envBtn" role="button" tabindex="0" aria-label="Open the envelope">
+      <div class="envelope" id="envelope">
+        <div class="back-pocket"></div>
+        <div class="letter-peek">sorry… 🥺</div>
+        <div class="pocket-front"></div>
+        <div class="flap"></div>
+        <div class="seal">💗</div>
+      </div>
+    </div>
+    <p class="to-line">To: <b class="toName">my favourite person</b></p>
+    <p class="hint">tap the envelope to open 💌</p>
+  </section>
+
+  <!-- 2. Letter -->
+  <section class="screen" id="s-letter">
+    <div class="card" style="margin-top:80px">
+      <div class="bear-slot"></div>
+      <h1 class="sorry">I'm Sorry</h1>
+      <p class="sub">from the bottom of my heart 💗</p>
+      <div class="letter" id="letter"></div>
+      <p class="sign" id="sign">— <span class="fromName">me</span> 💌</p>
+      <div class="row"><button class="btn" id="toPromises" disabled>Keep reading →</button></div>
+    </div>
+  </section>
+
+  <!-- 3. Promises -->
+  <section class="screen" id="s-prom">
+    <div class="card">
+      <p class="kicker">tap each card</p>
+      <h2 style="font-size:1.9rem;font-weight:700">My little promises</h2>
+      <p class="sub" style="margin-top:4px">because sorry should come with a plan</p>
+      <div class="promises">
+        <div class="flip"><div class="flip-in"><div class="face front"><span class="emo">👂</span><small>Promise #1</small></div><div class="face back">I'll listen more & talk less</div></div></div>
+        <div class="flip"><div class="flip-in"><div class="face front"><span class="emo">🤗</span><small>Promise #2</small></div><div class="face back">Unlimited hugs, on demand</div></div></div>
+        <div class="flip"><div class="flip-in"><div class="face front"><span class="emo">🍫</span><small>Promise #3</small></div><div class="face back">Your favourite snacks, my treat</div></div></div>
+      </div>
+      <div class="row"><button class="btn" id="toAsk" disabled>One last thing…</button></div>
+    </div>
+  </section>
+
+  <!-- 4. Ask -->
+  <section class="screen" id="s-ask">
+    <div class="card" style="margin-top:80px">
+      <div class="bear-slot"></div>
+      <h2 class="ask">Will you forgive me?</h2>
+      <p class="sub">pretty please with a cherry on top 🍒</p>
+      <div class="choice-zone" id="zone">
+        <button class="btn" id="yes">Yes 💖</button>
+        <button class="btn ghost" id="no">No</button>
+      </div>
+      <p class="plead" id="plead"></p>
+    </div>
+  </section>
+
+  <!-- 5. Yay -->
+  <section class="screen" id="s-yay">
+    <div class="card" style="margin-top:80px">
+      <div class="bear-slot happy"></div>
+      <h2 class="yay">Yaaay! 🥳</h2>
+      <p class="sub" style="margin-top:6px">You just made my whole day. Thank you, <span class="toName">my favourite person</span> 💗</p>
+      <div class="coupon">
+        <div class="ic">🎟️</div>
+        <div><b>Redeemable: 1 Big Warm Hug</b><span>valid forever · no expiry · unlimited refills</span></div>
+      </div>
+      <div class="row">
+        <button class="btn" id="hugBtn">Send a hug back 🤗</button>
+        <button class="btn ghost" id="replay">Replay ↺</button>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const qs = new URLSearchParams(location.search);
+  const clean = s => (s || "").replace(/[<>]/g, "").slice(0, 40).trim();
+  const TO = clean(qs.get("to")), FROM = clean(qs.get("from"));
+  if (TO) document.querySelectorAll(".toName").forEach(e => e.textContent = TO);
+  if (FROM) document.querySelectorAll(".fromName").forEach(e => e.textContent = FROM);
+
+  const MSG = clean(qs.get("msg")) ? qs.get("msg").slice(0, 400) :
+`Dear ${TO || "you"},
+
+I know I messed up, and I'm really, truly sorry. You mean so much to me, and the last thing I ever want is to make you feel bad.
+
+I'll do better — I promise. 💗`;
+
+  // bears
+  const tpl = document.getElementById("bearTpl");
+  document.querySelectorAll(".bear-slot").forEach(slot => {
+    const b = tpl.content.firstElementChild.cloneNode(true);
+    if (slot.classList.contains("happy")) b.classList.add("happy");
+    slot.replaceWith(b);
+  });
+
+  // floating hearts
+  const hearts = document.getElementById("hearts");
+  const HE = ["💗","💕","💖","🩷","💞","✨"];
+  function spawnHeart(){
+    const h = document.createElement("span");
+    h.className = "fh";
+    h.textContent = HE[Math.random()*HE.length|0];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (14 + Math.random()*22) + "px";
+    h.style.setProperty("--r", (Math.random()*80-40) + "deg");
+    h.style.animationDuration = (7 + Math.random()*7) + "s";
+    hearts.appendChild(h);
+    setTimeout(() => h.remove(), 15000);
+  }
+  for (let i=0;i<8;i++) setTimeout(spawnHeart, i*400);
+  setInterval(spawnHeart, 900);
+
+  const show = id => {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+  const vibrate = p => { try { navigator.vibrate && navigator.vibrate(p); } catch(e){} };
+
+  // 1 → envelope
+  const env = document.getElementById("envelope"), envBtn = document.getElementById("envBtn");
+  let opened = false;
+  function openEnv(){
+    if (opened) return; opened = true;
+    env.classList.add("open"); vibrate(30); chime();
+    setTimeout(() => { show("s-letter"); typeLetter(); }, 1300);
+  }
+  envBtn.addEventListener("click", openEnv);
+  envBtn.addEventListener("keydown", e => (e.key === "Enter" || e.key === " ") && openEnv());
+
+  // 2 → typewriter
+  const letter = document.getElementById("letter");
+  function typeLetter(){
+    let i = 0; letter.innerHTML = '<span id="tx"></span><span class="caret"></span>';
+    const tx = document.getElementById("tx");
+    const tick = () => {
+      tx.textContent = MSG.slice(0, ++i);
+      if (i < MSG.length) setTimeout(tick, /[.,—\n]/.test(MSG[i-1]) ? 180 : 32);
+      else { document.getElementById("sign").classList.add("show"); document.getElementById("toPromises").disabled = false; }
+    };
+    tick();
+    letter.onclick = () => { i = MSG.length - 1; }; // tap to skip
+  }
+  document.getElementById("toPromises").onclick = () => show("s-prom");
+
+  // 3 → flips
+  const flips = [...document.querySelectorAll(".flip")];
+  flips.forEach(f => f.addEventListener("click", () => {
+    f.classList.toggle("on"); vibrate(15);
+    if (flips.every(x => x.classList.contains("on")) || flips.filter(x=>x.classList.contains("on")).length >= 2)
+      document.getElementById("toAsk").disabled = false;
+  }));
+  document.getElementById("toAsk").onclick = () => show("s-ask");
+
+  // 4 → yes / no
+  const yes = document.getElementById("yes"), no = document.getElementById("no"), plead = document.getElementById("plead");
+  const PLEAS = ["Are you sure? 🥺","Pleeease? 🙏","I'll buy you ice cream 🍦","Think again… 💭","My heart is breaking 💔","Okay the Yes button is right there 👉","You can't catch it anyway 😜"];
+  let noCount = 0, yesScale = 1;
+  function dodge(e){
+    if (e) e.preventDefault();
+    noCount++;
+    plead.textContent = PLEAS[Math.min(noCount-1, PLEAS.length-1)];
+    yesScale = Math.min(1 + noCount*0.18, 2.2);
+    yes.style.transform = `scale(${yesScale})`;
+    const r = no.getBoundingClientRect();
+    if (!no.classList.contains("loose")) { no.style.left = r.left+"px"; no.style.top = r.top+"px"; no.classList.add("loose"); }
+    const pad = 16, w = r.width, h = r.height;
+    const x = pad + Math.random()*(innerWidth - w - pad*2);
+    const y = pad + Math.random()*(innerHeight - h - pad*2);
+    no.style.left = x+"px"; no.style.top = y+"px";
+    no.style.transform = `scale(${Math.max(1 - noCount*0.08, .55)}) rotate(${Math.random()*30-15}deg)`;
+    vibrate(20);
+  }
+  no.addEventListener("mouseenter", dodge);
+  no.addEventListener("touchstart", dodge, {passive:false});
+  no.addEventListener("click", dodge);
+  yes.addEventListener("click", () => {
+    no.classList.remove("loose"); no.style.cssText = "";
+    show("s-yay"); burst(); vibrate([40,40,80]); chime(true);
+  });
+
+  // 5 → yay
+  const toast = document.getElementById("toast");
+  const toastMsg = t => { toast.textContent = t; toast.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(()=>toast.classList.remove("show"), 2200); };
+  document.getElementById("hugBtn").onclick = () => { burst(["🤗","💗","💞"]); toastMsg("Hug delivered! 🤗💗"); vibrate([30,30,30]); };
+  document.getElementById("replay").onclick = () => {
+    opened = false; env.classList.remove("open"); noCount = 0; yes.style.transform = ""; plead.textContent = "";
+    flips.forEach(f => f.classList.remove("on"));
+    document.getElementById("toPromises").disabled = true; document.getElementById("toAsk").disabled = true;
+    document.getElementById("sign").classList.remove("show");
+    show("s-env");
+  };
+
+  // confetti
+  const cv = document.getElementById("confetti"), cx = cv.getContext("2d");
+  let parts = [], raf;
+  const fit = () => { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); };
+  fit(); addEventListener("resize", fit);
+  function burst(emojis){
+    const set = emojis || ["💖","💗","✨","🩷","💕","🌸"];
+    const colors = ["#ff6f9c","#ffb59e","#b9a7ff","#ffd166","#7bdff2"];
+    for (let i=0;i<140;i++){
+      const em = Math.random() < .35;
+      parts.push({x:innerWidth/2,y:innerHeight*0.55,vx:(Math.random()-.5)*14,vy:-Math.random()*15-5,g:.32,
+        s:em? 16+Math.random()*14 : 5+Math.random()*6, rot:Math.random()*6, vr:(Math.random()-.5)*.3,
+        c:colors[Math.random()*colors.length|0], e: em ? set[Math.random()*set.length|0] : null, life:0});
+    }
+    cancelAnimationFrame(raf); loop();
+  }
+  function loop(){
+    cx.clearRect(0,0,innerWidth,innerHeight);
+    parts.forEach(p => {
+      p.vy += p.g; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life++;
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot); cx.globalAlpha = Math.max(0, 1 - p.life/180);
+      if (p.e){ cx.font = p.s+"px serif"; cx.textAlign="center"; cx.fillText(p.e,0,0); }
+      else { cx.fillStyle = p.c; cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); }
+      cx.restore();
+    });
+    parts = parts.filter(p => p.life < 180 && p.y < innerHeight + 40);
+    if (parts.length) raf = requestAnimationFrame(loop); else cx.clearRect(0,0,innerWidth,innerHeight);
+  }
+
+  // tiny sound (Web Audio, no files)
+  let actx, musicOn = false, musicTimer;
+  const ac = () => actx || (actx = new (window.AudioContext || window.webkitAudioContext)());
+  function note(f, t, d=.35, v=.08){
+    const a = ac(), o = a.createOscillator(), g = a.createGain();
+    o.type = "sine"; o.frequency.value = f;
+    g.gain.setValueAtTime(0, a.currentTime+t); g.gain.linearRampToValueAtTime(v, a.currentTime+t+.02);
+    g.gain.exponentialRampToValueAtTime(.0001, a.currentTime+t+d);
+    o.connect(g).connect(a.destination); o.start(a.currentTime+t); o.stop(a.currentTime+t+d+.05);
+  }
+  function chime(big){ try { (big ? [523,659,784,1047] : [659,880]).forEach((f,i)=>note(f,i*.11,.5)); } catch(e){} }
+  const tune = [[523,0],[659,.4],[784,.8],[659,1.2],[587,1.6],[698,2],[880,2.4],[698,2.8],[523,3.2],[659,3.6],[784,4],[1047,4.4],[988,4.8],[784,5.2],[659,5.6],[587,6]];
+  function playTune(){ tune.forEach(([f,t]) => note(f,t,.6,.05)); musicTimer = setTimeout(playTune, 6800); }
+  document.getElementById("music").onclick = e => {
+    musicOn = !musicOn; e.currentTarget.textContent = musicOn ? "🔇" : "🎵";
+    if (musicOn) { ac().resume(); playTune(); toastMsg("Soft music on 🎶"); } else clearTimeout(musicTimer);
+  };
+})();
+</script>
+</body>
+</html>
